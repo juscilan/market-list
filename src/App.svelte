@@ -136,7 +136,7 @@
             <option value={unit}>{unit}</option>
           {/each}
         </select>
-        <button class="btn-add" onclick={addItem}>+</button>
+        <button class="btn-add" disabled={!newItemName.trim()} onclick={addItem}>+</button>
       </div>
     </section>
 

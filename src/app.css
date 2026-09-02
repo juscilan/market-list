@@ -227,6 +227,15 @@ body {
   background: var(--accent);
 }
 
+.btn-add:disabled {
+  background: #c9c9c9;
+  cursor: not-allowed;
+}
+
+.btn-add:disabled:hover {
+  background: #c9c9c9;
+}
+
 .btn-add:active {
   transform: scale(0.92);
 }
