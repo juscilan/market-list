@@ -231,6 +231,39 @@ body {
   transform: scale(0.92);
 }
 
+/* Mobile: wrap the add row so nothing overflows */
+@media (max-width: 420px) {
+  .add-section {
+    padding: 0.75rem;
+  }
+
+  .input-group {
+    flex-wrap: wrap;
+  }
+
+  .input-name {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .input-qty {
+    flex: 1 1 30%;
+    width: auto;
+  }
+
+  .input-unit {
+    flex: 1 1 30%;
+    width: auto;
+  }
+
+  .btn-add {
+    flex: 1 1 40%;
+    width: auto;
+    min-height: 54px;
+    font-size: 2rem;
+  }
+}
+
 /* Filters */
 .filters {
   display: flex;
