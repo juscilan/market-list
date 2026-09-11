@@ -2,8 +2,47 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const securityHeaders = (dev) => ({
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    `connect-src 'self'${dev ? ' ws:' : ''}`,
+    "manifest-src 'self'",
+    "worker-src 'self'",
+    "font-src 'self'",
+  ].join('; '),
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'no-referrer',
+  'Permissions-Policy':
+    'camera=(), display-capture=(), fullscreen=(), geolocation=(), microphone=(), payment=(), usb=()',
+})
+
+function securityHeadersPlugin() {
+  const apply = (server) => {
+    server.middlewares.use((_req, res, next) => {
+      for (const [name, value] of Object.entries(securityHeaders(process.env.NODE_ENV === 'development'))) {
+        res.setHeader(name, value)
+      }
+      next()
+    })
+  }
+  return {
+    name: 'security-headers',
+    configureServer: apply,
+    configurePreviewServer: apply,
+  }
+}
+
 export default defineConfig({
   plugins: [
+    securityHeadersPlugin(),
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',

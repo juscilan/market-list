@@ -1,7 +1,7 @@
 {
   "name": "market-list",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Juscilan Moreto - www.juscilan.com",
   "type": "module",
   "scripts": {
