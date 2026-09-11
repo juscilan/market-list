@@ -221,17 +221,19 @@ Sent on every response by the `security-headers` Vite plugin (dev + preview) and
 
 | #    | Response Header          | Value / Policy                                                         | Acceptance                                    |
 | ---- | ------------------------ | ---------------------------------------------------------------------- | --------------------------------------------- |
-| 10.1 | `Content-Security-Policy`| `default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; font-src 'self'` | No XSS / injection from third-party sources    |
+| 10.1 | `Content-Security-Policy`| `default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; font-src 'self'` | No XSS / injection from third-party sources    |
 | 10.2 | CSP `frame-ancestors`    | `'none'`                                                               | Blocks clickjacking                            |
 | 10.3 | `X-Frame-Options`        | `DENY`                                                                 | Blocks framing entirely                        |
 | 10.4 | `X-Content-Type-Options` | `nosniff`                                                              | Prevents MIME-sniffing                         |
 | 10.5 | `Referrer-Policy`        | `no-referrer`                                                          | No referrer leakage                           |
 | 10.6 | `Permissions-Policy`     | `camera=(), display-capture=(), fullscreen=(), geolocation=(), microphone=(), payment=(), usb=()` | Disables all non-essential browser APIs        |
-| 10.7 | Dev-only CSP exception   | `connect-src` appends `ws:` when `NODE_ENV=development`                | HMR WebSocket works, prod stays strict         |
+| 10.7 | Dev-only CSP exception   | `connect-src` appends `ws:` and `style-src` appends `'unsafe-inline'` when `NODE_ENV=development` | HMR WebSocket + injected styles work, prod stays strict |
 | 10.8 | Static hosting fallback  | `_headers` file in `public/` gets copied to `dist/`                    | Headers apply on hosts that support `_headers` |
 | 10.9 | Build integrity          | Headers must not break PWA (SW, manifest) or the data-URI SVG chevron  | `img-src` allows `data:`, `worker-src`/`manifest-src` allow `'self'` |
+| 10.10| Strict prod styles       | No `'unsafe-inline'` in production (`style-src 'self'`)                | Vite extracts all CSS to an external file, so inline styles aren't needed |
+| 10.11| HTTPS enforcement        | `upgrade-insecure-requests` in CSP                                     | All requests upgrade to HTTPS                 |
 
-> **Note:** `style-src 'unsafe-inline'` is required for Svelte/Vite injecting styles at runtime (app has no external stylesheets). Deployments that don't read `_headers` (GitHub Pages, S3, CDNs) need the same headers configured on the hosting server.
+> **Note:** `'unsafe-inline'` for `style-src` is only applied in development (Vite injects styles at runtime). Deployments that don't read `_headers` (GitHub Pages, S3, CDNs) need the same headers configured on the hosting server.
 
 ### 5.11 Footer — Version & Copyright
 
