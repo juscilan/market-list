@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { render, screen, fireEvent, cleanup } from '@testing-library/svelte'
 import App from './App.svelte'
 
@@ -72,6 +74,13 @@ describe('Market List App', () => {
       render(App)
       expect(screen.getByPlaceholderText('Nome do item...')).toBeInTheDocument()
       expect(screen.getByText('+')).toBeInTheDocument()
+    })
+
+    it('renders version from package.json and copyright in the footer', () => {
+      const pkg = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf-8'))
+      render(App)
+      expect(screen.getByText(`v${pkg.version}`)).toBeInTheDocument()
+      expect(screen.getByText(new RegExp(`© ${new Date().getFullYear()} Juscilan Moreto`))).toBeInTheDocument()
     })
   })
 

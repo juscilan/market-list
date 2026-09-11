@@ -9,6 +9,9 @@
   let editUnit = $state('un');
   let filter = $state('all');
 
+  const appVersion = __APP_VERSION__;
+  const copyrightYear = new Date().getFullYear();
+
   const units = ['un', 'kg', 'g', 'L', 'mL', 'pct', 'cx', 'pt'];
 
   $effect(() => {
@@ -206,4 +209,9 @@
       </div>
     {/if}
   </main>
+
+  <footer class="footer">
+    <span class="footer-copyright">© {copyrightYear} Juscilan Moreto</span>
+    <span class="footer-version">v{appVersion}</span>
+  </footer>
 </div>

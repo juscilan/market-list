@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
+import pkg from './package.json'
 
 const securityHeaders = (dev) => ({
   'Content-Security-Policy': [
@@ -41,6 +42,9 @@ function securityHeadersPlugin() {
 }
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   plugins: [
     securityHeadersPlugin(),
     svelte(),

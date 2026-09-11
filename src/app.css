@@ -584,3 +584,29 @@ body {
   width: 0;
   height: 0;
 }
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem calc(1rem + var(--safe-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.footer-copyright {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.footer-version {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
+}

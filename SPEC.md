@@ -233,6 +233,18 @@ Sent on every response by the `security-headers` Vite plugin (dev + preview) and
 
 > **Note:** `style-src 'unsafe-inline'` is required for Svelte/Vite injecting styles at runtime (app has no external stylesheets). Deployments that don't read `_headers` (GitHub Pages, S3, CDNs) need the same headers configured on the hosting server.
 
+### 5.11 Footer — Version & Copyright
+
+The version is injected at build time via Vite `define` (`__APP_VERSION__` from `package.json`), so it can never drift from the released version.
+
+| #    | Behavior                                                        | Acceptance                                          |
+| ---- | --------------------------------------------------------------- | --------------------------------------------------- |
+| 11.1 | Footer shown on every screen, at bottom of the app              | Sticky to layout end, always visible                |
+| 11.2 | Version label `v{version}` rendered from `package.json`         | Uses `__APP_VERSION__`, defined in `vite.config.js` from `pkg.version` |
+| 11.3 | Copyright `© {currentYear} Juscilan Moreto`                     | Year computed via `new Date().getFullYear()`        |
+| 11.4 | Same version available in `vitest.config.js` for test assertions | Tests read `package.json` directly and assert the rendered label |
+| 11.5 | Version must not be hard-coded in component code                | Source of truth is `package.json`                   |
+
 ---
 
 ## 6. UI / Design Specs
@@ -266,7 +278,7 @@ Sent on every response by the `security-headers` Vite plugin (dev + preview) and
 
 | Feature Area      | # Tests | What's Covered                                |
 | ----------------- | ------- | --------------------------------------------- |
-| Rendering         | 4       | Header, empty state, stats, filters, form     |
+| Rendering         | 5       | Header, empty state, stats, filters, form, footer (version + copyright) |
 | Add Item          | 6       | Default values, trim, empty rejection, reset, Enter, persistence |
 | Toggle Check      | 3       | Check, uncheck, line-through class            |
 | Remove Item       | 2       | Single remove, targeted remove                |
@@ -275,7 +287,7 @@ Sent on every response by the `security-headers` Vite plugin (dev + preview) and
 | Clear Actions     | 3       | Clear checked, clear all (confirmed), clear all (cancelled) |
 | Stats             | 2       | Mixed state counts, singular wording          |
 | localStorage      | 4       | Load on mount, strip category, persist check, persist edit |
-| **Total**         | **33**  |                                               |
+| **Total**         | **34**  |                                               |
 
 ### Test Conventions
 - Tests live in `src/App.test.js`
@@ -346,7 +358,7 @@ Before merging any new feature:
 
 | Version | Changes                                    |
 | ------- | ------------------------------------------ |
-| 1.0.3   | Add security headers: CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy (Vite plugin + `public/_headers`) |
+| 1.0.3   | Add security headers (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) via Vite plugin + `public/_headers`; show version (from `package.json`) and copyright in a footer; 34 tests |
 | 1.0.2   | Disable plus button when box is empty       |
 | 1.0.1   | Fix missing PNG app icon                    |
 | 1.0.0   | Initial release — full feature set, PWA, 33 tests |
